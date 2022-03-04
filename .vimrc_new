@@ -1,0 +1,140 @@
+" Vi incompatible - uses Vim feature set
+set nocompatible
+
+" set line numbers
+set nu
+
+syntax on
+
+set errorbells
+
+set tabstop=2 softtabstop=4
+set shiftwidth=4
+set expandtab
+set path+=**
+set wildmenu
+set wildignore=**/nodemodules/**
+set smartindent
+set nowrap
+set smartcase
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+set incsearch
+highlight ColorColoumn ctermbg=0 guibg=lightgrey
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'morhetz/gruvbox'
+Plug 'jremmen/vim-ripgrep'
+Plug 'tpope/vim-fugitive'
+Plug 'leafgarland/typescript-vim'
+Plug 'vim-utils/vim-man'
+Plug 'lyuts/vim-rtags'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'mbbill/undotree'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'davidhalter/jedi-vim'
+
+
+call plug#end()
+
+colorscheme gruvbox
+set background=dark
+
+if executable('rg')
+    let g:rg_derice_root='true'
+endif
+
+let g:ctrlp_user_command = ['.git/', '--git-dir=%s/.git ls-files -oc --exclude-standard']
+let mapleader = " "
+let g:netrw_browse_split=2
+let g:netrw_banner = 0
+
+let g:netrw_winsize = 25
+let g:ctrlp_use_caching = 0
+
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>u :UndotreeShow<CR> 
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30 <CR>
+nnoremap <leader>ps :Rg<SPACE>
+nnoremap <silent> <leader>+ :vertical resize +5<CR> 
+nnoremap <silent> <leader>- :vertical resize -5<CR> 
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>wq :wq<CR>
+nnoremap <leader>s :source %<CR>
+nnoremap <leader>B :buffers<CR>
+nnoremap <leader>b :b
+
+nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+nnoremap <silent> <leader>gf :YcmCompleter Fixit<CR>
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+set splitbelow
+set splitright
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set foldmethod=indent
+set foldlevel=99
+
+au BufNewFile, BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+
+au BufNewFile, BufRead *.js, *.html, *.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+
+highlight BadWhitespace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+
+
+let python_highlight_all=1
+syntax on
+
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+
+
+set backspace=indent,eol,start
+
+autocmd VimEnter * NERDTree | wincmd p
+
+
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_stubs_command = "<leader>s"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
